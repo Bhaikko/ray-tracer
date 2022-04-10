@@ -5,4 +5,4 @@ SRCS_CPPS = \
 				./src/main.cpp \
 
 run:
-	$(CXX) $(SRCS_CPPS) -o tracer $(CPPFLAGS)
+	$(CXX) $(SRCS_CPPS) -o ./build/tracer $(CPPFLAGS)
