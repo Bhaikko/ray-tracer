@@ -9,16 +9,18 @@ double hit_sphere(const point3& center, double radius, const ray& r)
 {
     // Based on Ray-sphere intersection quadratic equation
     vec3 oc = r.origin() - center;
-    double a = dot(r.direction(), r.direction());
-    double b = 2.0 * dot(oc, r.direction());
-    double c = dot(oc, oc) - radius * radius;
 
-    double discriminant = b * b - 4 * a * c;
+    // Optimisation for Root finding based on b = 2h
+    double a = dot(r.direction(), r.direction());
+    double half_b = dot(oc, r.direction());
+    double c = oc.length_squared() - radius * radius;
+
+    double discriminant = half_b * half_b - a * c;
 
     if (discriminant < 0) {
         return -1.0;
     } else {
-        return (-b - sqrt(discriminant)) / (2.0 * a);
+        return (-half_b - sqrt(discriminant)) / a;
     }
 }
 
