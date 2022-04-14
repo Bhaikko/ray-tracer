@@ -2,6 +2,7 @@
 
 camera::camera()
 {
+    // Viewpoer Setup
     double aspect_ratio = 16.0 / 9.0;
     double viewport_height = 2.0;
     double viewport_width = aspect_ratio * viewport_height;

@@ -4,6 +4,7 @@ CPPFLAGS = -std=c++11 -Wall -g
 LIB_CPPS = \
 				./lib/sphere.cpp \
 				./lib/hittable_list.cpp \
+				./lib/camera.cpp \
 
 SRCS_CPPS = \
 				./src/main.cpp \

@@ -3,6 +3,7 @@
 #include "./../include/color.h"
 #include "./../include/hittable_list.h"
 #include "./../include/sphere.h"
+#include "./../include/camera.h"
 
 #include <iostream>
 
@@ -26,9 +27,10 @@ color ray_color(const ray& r, const hittable& world)
 int main()
 {
     // Image Configurations
-    const float aspect_ratio = 16.0 / 9.0;
+    const double aspect_ratio = 16.0 / 9.0;
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
+    const int samples_per_pixel = 100;
 
     // World 
     hittable_list world;
@@ -36,22 +38,7 @@ int main()
     world.add(std::make_shared<sphere>(point3(0, -100.5, -1), 100));
     
     // Camera Setup
-    float viewport_height = 2.0f;
-    float viewport_width = aspect_ratio * viewport_height;
-    float focal_length = 1.0f;
-
-    // Viewport Setup
-    vec3 origin = point3(0, 0, 0);
-    vec3 horizontal = vec3(viewport_width, 0, 0);
-    vec3 vertical = vec3(0, viewport_height, 0);
-
-    // Viewport center will be at (0, 0) in x-y plane and in -z direction
-    vec3 lower_left_corner =    origin - 
-                                horizontal / 2 - 
-                                vertical / 2 - 
-                                vec3(0, 0, focal_length);
-
-
+    camera cam;
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
@@ -60,14 +47,19 @@ int main()
         // Using std::cerr since std::cout stream is output to image file
         std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
         for (int i = 0; i < image_width; ++i) {
-            // Sending Ray from origin towards Viewport based on Offsets 
-            double u = double(i) / (image_width - 1);
-            double v = double(j) / (image_height - 1);
+            color pixel_color(0, 0, 0);
 
-            ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-            
-            color pixel_color = ray_color(r, world);
-            write_color(std::cout, pixel_color);
+            // Anti-aliasing
+            for (int s = 0; s < samples_per_pixel; ++s) {
+                // Sending Ray from origin towards Viewport based on Offsets 
+                double u = double(i + random_double()) / (image_width - 1);
+                double v = double(j + random_double()) / (image_height - 1);
+
+                ray r = cam.get_ray(u, v);
+                pixel_color += ray_color(r, world);
+            }
+
+            write_color(std::cout, pixel_color, samples_per_pixel);
         }
     }
 
