@@ -5,15 +5,26 @@
 
 #include <iostream>
 
-void write_color(std::ostream& out, color pixel_color)
+void write_color(std::ostream& out, color pixel_color, int samples_per_pixel)
 {
     // out used to write to stream object
     // cout, err, etc can be passed
 
+    // Instead of dividing color to map to [0, 1] each time
+    // Dividing by number of samples at end after accumulating the sample color
+    double r = pixel_color.x();
+    double g = pixel_color.y();
+    double b = pixel_color.z();
+
+    double scale = 1.0 / samples_per_pixel;
+    r *= scale;
+    g *= scale;
+    b *= scale;
+
     // Transforming [0, 1] to [0, 255]
-    out << static_cast<int>(255.999 * pixel_color.x()) << ' ' 
-        << static_cast<int>(255.999 * pixel_color.y()) << ' ' 
-        << static_cast<int>(255.999 * pixel_color.z()) << '\n';
+    out << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' ' 
+        << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' ' 
+        << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
 }
 
 #endif
