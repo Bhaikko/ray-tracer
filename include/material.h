@@ -17,4 +17,32 @@ class material
         ) const = 0;
 };
 
+class lambertian: public material
+{
+    public:
+        color albedo;
+
+    public:
+        lambertian(const color& a): albedo(a) {}
+
+        virtual bool scatter(
+            const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+        ) const override;
+};
+
+class metal: public material 
+{
+    public:
+        color albedo;
+    
+    public:
+        metal(const color& a): albedo(a) {}
+
+        // Metal does not scatter rays randomly
+        // The rays are reflected
+        virtual bool scatter(
+            const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+        ) const override;
+};
+
 #endif
