@@ -3,6 +3,7 @@
 
 #include "hittable.h"
 #include "vec3.h"
+#include "material.h"
 
 // Sphere class
 class sphere: public hittable
@@ -10,10 +11,11 @@ class sphere: public hittable
     public:
         point3 center;
         double radius;
+        std::shared_ptr<material> mat_ptr;  // Material assigned to sphere
 
     public:
         sphere() {}
-        sphere(point3 cen, double r): center(cen), radius(r) {};
+        sphere(point3 cen, double r, std::shared_ptr<material> m): center(cen), radius(r), mat_ptr(m) {};
 
         // Contains Ray Intersection method for this object
         virtual bool hit(

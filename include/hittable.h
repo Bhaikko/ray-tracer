@@ -1,7 +1,8 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-#include "ray.h"
+#include "rtweekend.h"
+#include "material.h"
 
 // Defining an abstract class for anything a ray might hit
 
@@ -9,6 +10,7 @@
 struct hit_record {
     point3 p;           // Point of intersection
     vec3 normal;        // Normal at point of intersection
+    std::shared_ptr<material> mat_ptr;  // Reference to the material the ray hits
     double t;           // Parametric parameter at which the intersection occured for the ray
     bool front_face;    // Tracking the intersection is on front of face or back
 
