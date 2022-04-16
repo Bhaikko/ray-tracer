@@ -14,12 +14,18 @@ color ray_color(const ray& r, const hittable& world, int depth)
 
     // Ray bounce limit, no light gathered
     if (depth <= 0) {
+        // This causes the shadow when there are too many light bounces
         return color(0, 0, 0);
     }
 
-    if (world.hit(r, 0, inifinity, rec)) {
+    if (world.hit(r, 0.001, inifinity, rec)) {
         // Bouncing ray in random direction according to Diffuse surface
-        point3 target = rec.p + rec.normal + random_in_unit_sphere();
+        
+        // Diffuse material based on random ray dependent on normal
+        // point3 target = rec.p + rec.normal + random_unit_vector();
+
+        // Diffuse material based on random ray independent on normal
+        point3 target = rec.p + rec.normal + random_in_hemisphere(rec.normal);
 
         // Returning color based on the bounced ray
         return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);

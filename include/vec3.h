@@ -151,4 +151,22 @@ inline vec3 random_in_unit_sphere()
     }
 }
 
+// Returns a unit vector on the surface on unit sphere
+// By normalizing a vector inside the unit sphere
+inline vec3 random_unit_vector() {
+    return unit_vector(random_in_unit_sphere());
+}
+
+inline vec3 random_in_hemisphere(const vec3& normal)
+{
+    vec3 in_unit_sphere = random_in_unit_sphere();
+
+    // Buidling the hemisphere of random vector using dot product
+    if (dot(in_unit_sphere, normal) > 0.0) {
+        return in_unit_sphere;
+    } else {
+        return -in_unit_sphere;
+    }
+}
+
 #endif
