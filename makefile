@@ -5,6 +5,7 @@ LIB_CPPS = \
 				./lib/sphere.cpp \
 				./lib/hittable_list.cpp \
 				./lib/camera.cpp \
+				./lib/material.cpp \
 
 SRCS_CPPS = \
 				./src/main.cpp \

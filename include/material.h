@@ -20,7 +20,7 @@ class material
 class lambertian: public material
 {
     public:
-        color albedo;
+        color albedo;       // Material albedo color of surface
 
     public:
         lambertian(const color& a): albedo(a) {}
@@ -33,7 +33,7 @@ class lambertian: public material
 class metal: public material 
 {
     public:
-        color albedo;
+        color albedo;       // Material albedo color of surface
     
     public:
         metal(const color& a): albedo(a) {}

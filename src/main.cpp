@@ -4,6 +4,7 @@
 #include "./../include/hittable_list.h"
 #include "./../include/sphere.h"
 #include "./../include/camera.h"
+#include "./../include/material.h"
 
 #include <iostream>
 
@@ -19,16 +20,14 @@ color ray_color(const ray& r, const hittable& world, int depth)
     }
 
     if (world.hit(r, 0.001, inifinity, rec)) {
-        // Bouncing ray in random direction according to Diffuse surface
-        
-        // Diffuse material based on random ray dependent on normal
-        // point3 target = rec.p + rec.normal + random_unit_vector();
+        ray scattered;
+        color attentuation;
 
-        // Diffuse material based on random ray independent on normal
-        point3 target = rec.p + rec.normal + random_in_hemisphere(rec.normal);
+        if (rec.mat_ptr->scatter(r, rec, attentuation, scattered)) {
+            return attentuation * ray_color(scattered, world, depth - 1);
+        }
 
-        // Returning color based on the bounced ray
-        return 0.5 * ray_color(ray(rec.p, target - rec.p), world, depth - 1);
+        return color(0, 0, 0);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -51,10 +50,18 @@ int main()
     const int samples_per_pixel = 10;
     const int max_depth = 10;
 
-    // World 
+    // World configurations
     hittable_list world;
-    world.add(std::make_shared<sphere>(point3(0, 0, -1), 0.5));
-    world.add(std::make_shared<sphere>(point3(0, -100.5, -1), 100));
+
+    std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
+    std::shared_ptr<lambertian> material_center = std::make_shared<lambertian>(color(0.7, 0.3, 0.3));
+    std::shared_ptr<metal> material_left = std::make_shared<metal>(color(0.8, 0.8, 0.8));
+    std::shared_ptr<metal> material_right = std::make_shared<metal>(color(0.8, 0.6, 0.2));
+
+    world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
+    world.add(std::make_shared<sphere>(point3(-1.5,    0.0, -1.0),   0.5, material_left));
+    world.add(std::make_shared<sphere>(point3( 1.5,    0.0, -1.0),   0.5, material_right));
     
     // Camera Setup
     camera cam;
