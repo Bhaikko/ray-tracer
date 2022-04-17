@@ -55,8 +55,8 @@ int main()
 
     std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
     std::shared_ptr<lambertian> material_center = std::make_shared<lambertian>(color(0.7, 0.3, 0.3));
-    std::shared_ptr<metal> material_left = std::make_shared<metal>(color(0.8, 0.8, 0.8));
-    std::shared_ptr<metal> material_right = std::make_shared<metal>(color(0.8, 0.6, 0.2));
+    std::shared_ptr<metal> material_left = std::make_shared<metal>(color(0.8, 0.8, 0.8), 0.3);
+    std::shared_ptr<metal> material_right = std::make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
 
     world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));

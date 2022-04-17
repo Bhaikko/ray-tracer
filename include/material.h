@@ -34,9 +34,10 @@ class metal: public material
 {
     public:
         color albedo;       // Material albedo color of surface
+        double fuzz;        // Fuzziness parameter that deciedes the randomness of reflected ray
     
     public:
-        metal(const color& a): albedo(a) {}
+        metal(const color& a, double f): albedo(a), fuzz(f < 1 ? f : 1) {}
 
         // Metal does not scatter rays randomly
         // The rays are reflected
