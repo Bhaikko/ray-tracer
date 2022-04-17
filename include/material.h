@@ -56,7 +56,12 @@ class dielectric: public material
 
         virtual bool scatter(
             const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
-        ) const override;        
+        ) const override;     
+
+    private:
+        // Using Schlick's approximation for reflectance
+        // Dependent upon view angle as it contributes to specular lighting
+        static double reflectance(double cosine, double ref_idx);   
 };
 
 #endif
