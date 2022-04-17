@@ -42,3 +42,18 @@ bool metal::scatter(
     
     return (dot(scattered.direction(), rec.normal) > 0);
 }
+
+bool dielectric::scatter(
+    const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+) const {
+    attenuation = color(1.0, 1.0, 1.0);
+
+    // Based on the whether the ray enters from less dense to more denser material or vice versa 
+    double refraction_ratio = rec.front_face ? (1.0 / ir) : ir;
+
+    vec3 unit_direction = unit_vector(r_in.direction());
+    vec3 refracted = refract(unit_direction, rec.normal, refraction_ratio);
+
+    scattered = ray(rec.p, refracted);
+    return true;
+}

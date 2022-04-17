@@ -46,4 +46,17 @@ class metal: public material
         ) const override;
 };
 
+class dielectric: public material 
+{
+    public:
+        double ir;  // Index of refraction
+
+    public:
+        dielectric(double index_of_refraction): ir(index_of_refraction) {}
+
+        virtual bool scatter(
+            const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+        ) const override;        
+};
+
 #endif
