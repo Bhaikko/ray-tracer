@@ -53,22 +53,23 @@ int main()
     const int max_depth = 10;
 
     // World configurations
+    double R = cos(pi / 4);
     hittable_list world;
 
-    std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    std::shared_ptr<lambertian> material_center = std::make_shared<lambertian>(color(0.1, 0.2, 0.5));
-    std::shared_ptr<dielectric> material_left = std::make_shared<dielectric>(1.5);
-    std::shared_ptr<metal> material_right = std::make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+    std::shared_ptr<lambertian> material_left = std::make_shared<lambertian>(color(0, 0, 1));
+    std::shared_ptr<lambertian> material_right = std::make_shared<lambertian>(color(1, 0, 0));
 
-    world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-    world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-    world.add(std::make_shared<sphere>(point3(-1.5,    0.0, -1.0),   0.5, material_left));
-    // Negative radius inverts the normals inside
-    world.add(std::make_shared<sphere>(point3(-1.5,    0.0, -1.0),  -0.4, material_left));
-    world.add(std::make_shared<sphere>(point3( 1.5,    0.0, -1.0),   0.5, material_right));
-    
+    world.add(std::make_shared<sphere>(point3(-R, 0, -1), R, material_left));
+    world.add(std::make_shared<sphere>(point3( R, 0, -1), R, material_right));
+
     // Camera Setup
-    camera cam;
+    camera cam(
+        point3(-2, 2, 1),
+        point3(0, 0, -1),
+        vec3(0, 1, 0),
+        90,
+        aspect_ratio
+    );
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
