@@ -21,6 +21,8 @@ color ray_color(const ray& r, const hittable& world, int depth)
 
     if (world.hit(r, 0.001, inifinity, rec)) {
         ray scattered;
+
+        // Attentuation is how much energy of ray absorbed when hitting the surface
         color attentuation;
 
         if (rec.mat_ptr->scatter(r, rec, attentuation, scattered)) {
@@ -54,9 +56,9 @@ int main()
     hittable_list world;
 
     std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    std::shared_ptr<dielectric> material_center = std::make_shared<dielectric>(1.5);
+    std::shared_ptr<lambertian> material_center = std::make_shared<lambertian>(color(0.1, 0.2, 0.5));
     std::shared_ptr<dielectric> material_left = std::make_shared<dielectric>(1.5);
-    std::shared_ptr<metal> material_right = std::make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+    std::shared_ptr<metal> material_right = std::make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
 
     world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
