@@ -65,13 +65,22 @@ int main()
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0), -0.45, material_left));
     world.add(std::make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
+    
     // Camera Setup
+    point3 lookfrom(3, 3, 2);
+    point3 lookat(0, 0, -1);
+    vec3 vup(0, 1, 0);
+    double dist_to_focus = (lookfrom - lookat).length();
+    double aperture = 2.0;
+
     camera cam(
-        point3(-2, 2, 1),
-        point3(0, 0, -1),
-        vec3(0, 1, 0),
+        lookfrom,
+        lookat,
+        vup,
         20,
-        aspect_ratio
+        aspect_ratio,
+        aperture,
+        dist_to_focus
     );
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
