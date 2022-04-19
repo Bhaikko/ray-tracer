@@ -22,7 +22,7 @@ bool lambertian::scatter(
     }
 
     // Ray scattered from current hit point
-    scattered = ray(rec.p, scatter_direction);
+    scattered = ray(rec.p, scatter_direction, r_in.time());
 
     attenuation = albedo;
     return true;
@@ -36,7 +36,7 @@ bool metal::scatter(
     vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
 
     // Adding randomness to reflected ray based on fuzziness
-    scattered = ray(rec.p, reflected + fuzz * random_in_unit_sphere());
+    scattered = ray(rec.p, reflected + fuzz * random_in_unit_sphere(), r_in.time());
 
     attenuation = albedo;
     
@@ -68,7 +68,7 @@ bool dielectric::scatter(
         direction = refract(unit_direction, rec.normal, refraction_ratio);
     }
 
-    scattered = ray(rec.p, direction);
+    scattered = ray(rec.p, direction, r_in.time());
     return true;
 }
 

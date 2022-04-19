@@ -3,6 +3,7 @@
 #include "./../include/color.h"
 #include "./../include/hittable_list.h"
 #include "./../include/sphere.h"
+#include "./../include/moving_sphere.h"
 #include "./../include/camera.h"
 #include "./../include/material.h"
 
@@ -60,10 +61,16 @@ hittable_list random_scene()
 
                 if (choose_mat < 0.8) {
                     // Diffuse
+
+                    // Spawning Movable spheres that transition between two posision
                     vec3 albedo = color::random() * color::random();
                     sphere_material = std::make_shared<lambertian>(albedo);
 
-                    world.add(std::make_shared<sphere>(center, 0.2, sphere_material));
+                    vec3 center2 = center + vec3(0, random_double(0, 0.5), 0);
+
+                    world.add(std::make_shared<moving_sphere>(
+                        center, center2, 0.0, 1.0, 0.2, sphere_material
+                    ));
                 } else if (choose_mat < 0.95) {
                     // Metal
                     vec3 albedo = color::random(0.5, 1);
@@ -133,7 +140,9 @@ int main()
         20,
         aspect_ratio,
         aperture,
-        dist_to_focus
+        dist_to_focus,
+        0.0,
+        1.0
     );
 
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";

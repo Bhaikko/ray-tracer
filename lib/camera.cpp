@@ -7,7 +7,9 @@ camera::camera(
     double vfov, 
     double aspect_ratio,
     double aperture,
-    double focus_dist
+    double focus_dist,
+    double _time0,
+    double _time1
 ) {
     // Viewport Setup
     double theta = degress_to_radians(vfov);
@@ -28,6 +30,8 @@ camera::camera(
                         focus_dist * w;
 
     lens_radius = aperture / 2;
+    time0 = _time0;
+    time1 = _time1;
 }
 
 ray camera::get_ray(double s, double t) const
@@ -37,6 +41,7 @@ ray camera::get_ray(double s, double t) const
 
     return ray(
         origin + offset,
-        lower_left_corner + s * horizontal + t * vertical - origin - offset
+        lower_left_corner + s * horizontal + t * vertical - origin - offset,
+        random_double(time0, time1)
     );
 }

@@ -13,6 +13,9 @@ class camera
         vec3 u, v, w;
         double lens_radius;
 
+        // Time interval to send rays in between, Shutter open and close time
+        double time0, time1;
+
     public:
         /**
          * @param vfov - Vertical field of view in degress
@@ -24,7 +27,9 @@ class camera
             double vfov, 
             double aspect_ratio,
             double aperture,
-            double focus_dist
+            double focus_dist,
+            double _time0 = 0,
+            double _time1 = 0
         );
 
         ray get_ray(double s, double t) const;
