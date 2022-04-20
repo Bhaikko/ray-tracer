@@ -6,6 +6,9 @@
 class aabb 
 {
     public:
+        // Since AABB are standard axis aligned
+        // Therefor, minimum and maximum point req and plane can be constructed 
+        // As planes will always will be parallel to Standard Axes
         point3 minimum;
         point3 maximum;
 

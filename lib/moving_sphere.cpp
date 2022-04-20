@@ -47,3 +47,25 @@ point3 moving_sphere::center(double time) const
 {
     return center0 + ((time - time0) / (time1 - time0)) * (center1 - center0);
 }
+
+bool moving_sphere::bounding_box(
+    double _time0, double _time1, aabb& output_box
+) const {
+    // Calculating bounding box at t0 and t1 seperately
+    // Returning a bounding box for two prev calculated bounding box
+
+    aabb box0(
+        center(_time0) - vec3(radius, radius, radius),
+        center(_time0) + vec3(radius, radius, radius)
+    );
+
+    aabb box1(
+        center(_time1) - vec3(radius, radius, radius),
+        center(_time1) + vec3(radius, radius, radius)
+    );
+
+    // output_box = surrounding_box(box0, box1);
+    return true;
+
+
+}
