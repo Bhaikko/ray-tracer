@@ -42,6 +42,7 @@ ray camera::get_ray(double s, double t) const
     return ray(
         origin + offset,
         lower_left_corner + s * horizontal + t * vertical - origin - offset,
-        random_double(time0, time1)
+        // This specifies the time at which the ray will sample for the intersection of moving sphere
+        random_double(time0, time1)     
     );
 }
