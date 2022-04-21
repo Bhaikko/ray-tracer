@@ -6,6 +6,7 @@
 #include "./../include/moving_sphere.h"
 #include "./../include/camera.h"
 #include "./../include/material.h"
+#include "./../include/texture.h"
 
 #include <iostream>
 
@@ -46,9 +47,9 @@ hittable_list random_scene()
 {
     hittable_list world;
 
-    std::shared_ptr<lambertian> ground_material = std::make_shared<lambertian>(color(0.5, 0.5, 0.5));
+    std::shared_ptr<texture> checker = std::make_shared<checker_texture>(color(0.2, 0.3, 0.1), color(0.9, 0.9, 0.9));
 
-    world.add(std::make_shared<sphere>(point3(0, -1000, 0), 1000, ground_material));
+    world.add(std::make_shared<sphere>(point3(0, -1000, 0), 1000, std::make_shared<lambertian>(checker)));
 
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
@@ -100,6 +101,8 @@ hittable_list random_scene()
     return world;
 }
 
+#define RANDOM_WORLD
+
 int main()
 {
     // Image Configurations
@@ -112,7 +115,9 @@ int main()
     const int max_depth = 10;
 
     // World configurations
-    // hittable_list world = random_scene();
+#ifdef RANDOM_WORLD
+    hittable_list world = random_scene();
+#else 
     hittable_list world;
 
     std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
@@ -125,7 +130,8 @@ int main()
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0), -0.45, material_left));
     world.add(std::make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
-    
+#endif
+
     // Camera Setup
     point3 lookfrom(13, 2, 3);
     point3 lookat(0, 0, 0);
