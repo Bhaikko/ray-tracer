@@ -2,6 +2,7 @@
 #define TEXTURE_H
 
 #include "rtweekend.h"
+#include "perlin.h"
 
 // Abstract class for a texture
 class texture
@@ -44,6 +45,19 @@ class checker_texture: public texture
 
         virtual color value(double u, double v, const point3& p) const override;
 
+};
+
+class noise_texture: public texture
+{
+    public:
+        perlin noise;
+
+    public:
+        noise_texture() {}
+
+        virtual color value(double u, double v, const point3& p) const override {
+            return color(1, 1, 1) * noise.noise(p);
+        }
 };
 
 #endif

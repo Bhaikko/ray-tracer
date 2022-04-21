@@ -8,6 +8,7 @@ LIB_CPPS = \
 				./lib/camera.cpp \
 				./lib/material.cpp \
 				./lib/texture.cpp \
+				./lib/perlin.cpp \
 				./lib/aabb.cpp \
 				./lib/bvh.cpp \
 

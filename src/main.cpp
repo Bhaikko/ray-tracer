@@ -111,7 +111,17 @@ hittable_list two_spheres()
     objects.add(std::make_shared<sphere>(point3(0, 10, 0), 10, std::make_shared<lambertian>(checker)));
 
     return objects;
+}
 
+hittable_list two_perlin_spheres()
+{
+    hittable_list objects;
+
+    std::shared_ptr<noise_texture> pertext = std::make_shared<noise_texture>();
+    objects.add(std::make_shared<sphere>(point3(0,-1000,0), 1000, std::make_shared<lambertian>(pertext)));
+    objects.add(std::make_shared<sphere>(point3(0, 2, 0), 2, std::make_shared<lambertian>(pertext)));
+
+    return objects;
 }
 
 int main()
@@ -141,11 +151,19 @@ int main()
             aperture = 0.1;
             break;
 
-        default:
         case 2:
             world = two_spheres();
             lookat = point3(0, 0, 0);
             vfov = 20.0;
+            break;
+
+        default:
+        case 3:
+            world = two_perlin_spheres();
+            lookfrom = point3(13, 2, 3);
+            lookat = point3(0, 0, 0);
+            vfov = 20.0;
+            break;
 
     }
 
