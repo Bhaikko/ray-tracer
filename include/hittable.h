@@ -14,6 +14,9 @@ struct hit_record {
     std::shared_ptr<material> mat_ptr;  // Reference to the material the ray hits
     double t;           // Parametric parameter at which the intersection occured for the ray
     bool front_face;    // Tracking the intersection is on front of face or back
+    double u;           // UV coordinates for texture lookup
+    double v;
+
 
     inline void set_face_normal(const ray& r, const vec3& outward_normal)
     {

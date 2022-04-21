@@ -24,6 +24,11 @@ class sphere: public hittable
 
         // Generating Bounding box for sphere
         virtual bool bounding_box(double time0, double time1, aabb& output_box) const override;
+
+    private:
+        // Converting Hit coordinate to UV coordinates
+        // Based on cartesian coordinates
+        static void get_sphere_uv(const point3& p, double& u, double& v);
 };
 
 #endif
