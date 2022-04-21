@@ -21,6 +21,9 @@ class perlin
         ~perlin();
 
         double noise(const point3& p) const;
+
+        // Turbulence added as multiple summed frequencies, sum of repeated calls to noise
+        double turb(const point3& p, int depth = 7) const;
 };
 
 #endif
