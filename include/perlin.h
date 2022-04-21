@@ -14,6 +14,7 @@ class perlin
 
         static int* perlin_generate_perm();
         static void permute(int* p, int n);
+        static double trilinear_interp(double c[2][2][2], double u, double v, double w);
 
     public:
         perlin();
