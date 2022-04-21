@@ -7,6 +7,8 @@ LIB_CPPS = \
 				./lib/hittable_list.cpp \
 				./lib/camera.cpp \
 				./lib/material.cpp \
+				./lib/aabb.cpp \
+				./lib/bvh.cpp \
 
 SRCS_CPPS = \
 				./src/main.cpp \

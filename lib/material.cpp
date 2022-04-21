@@ -24,7 +24,7 @@ bool lambertian::scatter(
     // Ray scattered from current hit point
     scattered = ray(rec.p, scatter_direction, r_in.time());
 
-    attenuation = albedo;
+    attenuation = albedo->value(rec.u, rec.v, rec.p);
     return true;
 }
 

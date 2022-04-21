@@ -112,18 +112,19 @@ int main()
     const int max_depth = 10;
 
     // World configurations
-    hittable_list world = random_scene();
+    // hittable_list world = random_scene();
+    hittable_list world;
 
-    // std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
-    // std::shared_ptr<lambertian> material_center = std::make_shared<lambertian>(color(0.1, 0.2, 0.5));
-    // std::shared_ptr<dielectric> material_left   = std::make_shared<dielectric>(1.5);
-    // std::shared_ptr<metal> material_right  = std::make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+    std::shared_ptr<lambertian> material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
+    std::shared_ptr<lambertian> material_center = std::make_shared<lambertian>(color(0.1, 0.2, 0.5));
+    std::shared_ptr<dielectric> material_left   = std::make_shared<dielectric>(1.5);
+    std::shared_ptr<metal> material_right  = std::make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
 
-    // world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-    // world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
-    // world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
-    // world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0), -0.45, material_left));
-    // world.add(std::make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
+    world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center));
+    world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
+    world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0), -0.45, material_left));
+    world.add(std::make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
     
     // Camera Setup
     point3 lookfrom(13, 2, 3);

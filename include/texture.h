@@ -7,7 +7,7 @@
 class texture
 {
     public:
-        virtual color(double u, double v, const point& p) const = 0;
+        virtual color value(double u, double v, const point3& p) const = 0;
 };
 
 class solid_color: public texture 
@@ -22,7 +22,7 @@ class solid_color: public texture
         solid_color(double red, double green, double blue)
             : solid_color(color(red, green, blue)) {}
 
-        virtual color_value(double u, double v, const point3& p) const override {
+        virtual color value(double u, double v, const point3& p) const override {
             return color_value;
         }
 };
