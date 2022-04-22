@@ -147,6 +147,8 @@ hittable_list simple_light()
     std::shared_ptr<diffuse_light> difflight = std::make_shared<diffuse_light>(color(4, 4, 4));
     objects.add(std::make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
 
+    objects.add(std::make_shared<sphere>(point3(0, 7, 0), 2, difflight));
+
     return objects;
 }
 
@@ -205,10 +207,10 @@ int main()
         default:
         case 5:
             world = simple_light();
-            samples_per_pixel = 10;
+            samples_per_pixel = 100;
             background = color(0.0, 0.0, 0.0);
             lookfrom = point3(26, 3, 6);
-            lookat = point3(26, 3, 6);
+            lookat = point3(0, 2, 0);
             vfov = 20.0;
             break;
 

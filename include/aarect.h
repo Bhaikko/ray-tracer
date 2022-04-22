@@ -18,7 +18,7 @@ class xy_rect: public hittable
         xy_rect() {}
 
         xy_rect(double _x0, double _x1, double _y0, double _y1, double _k, std::shared_ptr<material> mat)
-            : x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k), mp(mat) {}
+            : x0(_x0), x1(_x1), y0(_y0), y1(_y1), k(_k), mp(mat) {};
 
         virtual bool hit(const ray& r, double t_min, double t_max, hit_record& rec) const override;
 
