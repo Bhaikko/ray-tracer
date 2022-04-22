@@ -1,8 +1,12 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#include "./../helper/stb_image.h"
+
 #include "rtweekend.h"
 #include "perlin.h"
+
+#include <iostream>
 
 // Abstract class for a texture
 class texture
@@ -61,6 +65,29 @@ class noise_texture: public texture
         virtual color value(double u, double v, const point3& p) const override {
             return color(1, 1, 1) * 0.5 * (1 + sin(scale * p.z() + 10 * noise.turb(p)));
         }
+};
+
+class image_texture: public texture 
+{
+    private:
+        unsigned char* data;
+        int width, height;
+        int bytes_per_scanline;
+
+    public:
+        const static int bytes_per_pixel = 3;
+
+        image_texture()
+            : data(nullptr), width(0), height(0), bytes_per_scanline(0) {}
+
+        image_texture(const char* filename);
+
+        ~image_texture() { 
+            delete data;
+        }
+
+        virtual color value(double u, double v, const vec3& p) const override;
+
 };
 
 #endif
