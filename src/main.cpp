@@ -12,7 +12,7 @@
 #include <iostream>
 
 // Lerping ray color between Blue and White based on its y coordinate
-color ray_color(const ray& r, const hittable& world, int depth)
+color ray_color(const ray& r, const color& background, const hittable& world, int depth)
 {
     hit_record rec;
 
@@ -22,26 +22,26 @@ color ray_color(const ray& r, const hittable& world, int depth)
         return color(0, 0, 0);
     }
 
-    if (world.hit(r, 0.001, inifinity, rec)) {
-        ray scattered;
-
-        // Attentuation is how much energy of ray absorbed when hitting the surface
-        color attentuation;
-
-        if (rec.mat_ptr->scatter(r, rec, attentuation, scattered)) {
-            return attentuation * ray_color(scattered, world, depth - 1);
-        }
-
-        return color(0, 0, 0);
+    // If ray hits nothing, return black color
+    // This is due to the fact that, only light sources will emit light
+    if (!world.hit(r, 0.001, inifinity, rec)) {
+        return background;
     }
 
-    vec3 unit_direction = unit_vector(r.direction());
+    // Scattered is reflected ray upon hitting the object
+    ray scattered;
+    // Attentuation is how much enery of ray absorbed when hitting the surface
+    color attenuation;
+    // Emitted color based on object being light source
+    color emitted = rec.mat_ptr->emitted(rec.u, rec.v, rec.p);
 
-    // Mapping from [-1, 1] -> [0, 1]
-    double t = 0.5 * (unit_direction.y() + 1.0);   
+    if (!rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
+        return emitted;
+    }
 
-    // Blending between Blue and White
-    return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
+    return emitted + attenuation * ray_color(scattered, background, world, depth - 1);
+
+
 }
 
 hittable_list random_scene()
@@ -152,6 +152,7 @@ int main()
     point3 lookat(0, 0, 0);
     double vfov = 40.0;
     double aperture = 0.0;
+    color background(0, 0, 0);
 
     switch (0) {
         case 1:
@@ -160,12 +161,14 @@ int main()
             lookat = point3(0, 0, 0);
             vfov = 20.0;
             aperture = 0.1;
+            background = color(0.70, 0.80, 1.00);
             break;
 
         case 2:
             world = two_spheres();
             lookat = point3(0, 0, 0);
             vfov = 20.0;
+            background = color(0.70, 0.80, 1.00);
             break;
 
         case 3:
@@ -173,14 +176,21 @@ int main()
             lookfrom = point3(13, 2, 3);
             lookat = point3(0, 0, 0);
             vfov = 20.0;
+            background = color(0.70, 0.80, 1.00);
             break;
 
-        default:
         case 4:
             world = earth();
             lookfrom = point3(13, 2, 3);
             lookat = point3(0, 0, 0);
             vfov = 20.0;
+            background = color(0.70, 0.80, 1.00);
+            break;
+
+        default:
+        case 5:
+            world = earth();
+            background = color(0.0, 0.0, 0.0);
             break;
 
     }
@@ -218,7 +228,7 @@ int main()
                 double v = double(j + random_double()) / (image_height - 1);
 
                 ray r = cam.get_ray(u, v);
-                pixel_color += ray_color(r, world, max_depth);
+                pixel_color += ray_color(r, background, world, max_depth);
             }
 
             write_color(std::cout, pixel_color, samples_per_pixel);
