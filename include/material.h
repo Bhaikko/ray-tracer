@@ -86,6 +86,10 @@ class diffuse_light: public material
         // Light Source performs no reflection
         return false;
     }
+
+    virtual color emitted(double u, double v, const point3& p) const override {
+        return emit->value(u, v, p);
+    }
 };
 
 #endif

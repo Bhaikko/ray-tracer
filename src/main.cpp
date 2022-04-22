@@ -8,6 +8,7 @@
 #include "./../include/camera.h"
 #include "./../include/material.h"
 #include "./../include/texture.h"
+#include "./../include/aarect.h"
 
 #include <iostream>
 
@@ -39,9 +40,8 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
         return emitted;
     }
 
-    return emitted + attenuation * ray_color(scattered, background, world, depth - 1);
-
-
+    return emitted + // This adds Light color to the ray hit point
+        attenuation * ray_color(scattered, background, world, depth - 1);
 }
 
 hittable_list random_scene()
@@ -135,6 +135,21 @@ hittable_list earth()
     return hittable_list(globe);
 }
 
+hittable_list simple_light()
+{
+    hittable_list objects;
+
+    std::shared_ptr<noise_texture> pertext = std::make_shared<noise_texture>(4);
+
+    objects.add(std::make_shared<sphere>(point3(0, -1000, 0), 1000, std::make_shared<lambertian>(pertext)));
+    objects.add(std::make_shared<sphere>(point3(0, 2, 0), 2, std::make_shared<lambertian>(pertext)));
+
+    std::shared_ptr<diffuse_light> difflight = std::make_shared<diffuse_light>(color(4, 4, 4));
+    objects.add(std::make_shared<xy_rect>(3, 5, 1, 3, -2, difflight));
+
+    return objects;
+}
+
 int main()
 {
     // Image Configurations
@@ -143,7 +158,7 @@ int main()
     const int image_height = static_cast<int>(image_width / aspect_ratio);
 
     // Ray tracing attributes
-    const int samples_per_pixel = 10;
+    int samples_per_pixel = 10;
     const int max_depth = 10;
 
     // World configurations
@@ -189,8 +204,12 @@ int main()
 
         default:
         case 5:
-            world = earth();
+            world = simple_light();
+            samples_per_pixel = 10;
             background = color(0.0, 0.0, 0.0);
+            lookfrom = point3(26, 3, 6);
+            lookat = point3(26, 3, 6);
+            vfov = 20.0;
             break;
 
     }

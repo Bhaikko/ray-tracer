@@ -10,6 +10,7 @@ LIB_CPPS = \
 				./lib/texture.cpp \
 				./lib/perlin.cpp \
 				./lib/aabb.cpp \
+				./lib/aarect.cpp \
 				./lib/bvh.cpp \
 
 SRCS_CPPS = \
