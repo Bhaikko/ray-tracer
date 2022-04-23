@@ -6,6 +6,7 @@
 #include "aarect.h"
 #include "hittable_list.h"
 
+// Box Build using 6 Axis aligned planes
 class box: public hittable 
 {
     public:

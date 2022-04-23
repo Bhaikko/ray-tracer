@@ -5,6 +5,7 @@ LIB_CPPS = \
 				./lib/sphere.cpp \
 				./lib/moving_sphere.cpp \
 				./lib/hittable_list.cpp \
+				./lib/hittable.cpp \
 				./lib/camera.cpp \
 				./lib/material.cpp \
 				./lib/texture.cpp \
