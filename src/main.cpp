@@ -40,8 +40,27 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
         return emitted;
     }
 
-    return emitted + // This adds Light color to the ray hit point
-        attenuation * ray_color(scattered, background, world, depth - 1);
+    return  emitted + 
+            attenuation * ray_color(scattered, background, world, depth - 1);
+}
+
+hittable_list cornell_box()
+{
+    hittable_list objects;
+
+    std::shared_ptr<material> red =     std::make_shared<lambertian>(color(0.65, 0.05, 0.05));
+    std::shared_ptr<material> white =   std::make_shared<lambertian>(color(0.73, 0.73, 0.73));
+    std::shared_ptr<material> green =   std::make_shared<lambertian>(color(0.12, 0.45, 0.15));
+    std::shared_ptr<material> light =   std::make_shared<diffuse_light>(color(15, 15, 15));
+
+    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 555, green));
+    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 0, red));
+    objects.add(std::make_shared<xz_rect>(213, 343, 227, 332, 554, light));
+    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+    objects.add(std::make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+    return objects;
 }
 
 hittable_list random_scene()
@@ -155,9 +174,9 @@ hittable_list simple_light()
 int main()
 {
     // Image Configurations
-    const double aspect_ratio = 16.0 / 9.0;
-    const int image_width = 400;
-    const int image_height = static_cast<int>(image_width / aspect_ratio);
+    double aspect_ratio = 16.0 / 9.0;
+    int image_width = 400;
+    int image_height = static_cast<int>(image_width / aspect_ratio);
 
     // Ray tracing attributes
     int samples_per_pixel = 10;
@@ -204,7 +223,6 @@ int main()
             background = color(0.70, 0.80, 1.00);
             break;
 
-        default:
         case 5:
             world = simple_light();
             samples_per_pixel = 100;
@@ -212,6 +230,18 @@ int main()
             lookfrom = point3(26, 3, 6);
             lookat = point3(0, 2, 0);
             vfov = 20.0;
+            break;
+
+        default:
+        case 6:
+            world = cornell_box();
+            aspect_ratio = 1.0;
+            image_width = 600;
+            samples_per_pixel = 200;
+            background = color(0, 0, 0);
+            lookfrom = point3(278, 278, -800);
+            lookat = point3(278, 278, 0);
+            vfov = 40.0;
             break;
 
     }
