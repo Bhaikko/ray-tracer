@@ -12,6 +12,7 @@ LIB_CPPS = \
 				./lib/aabb.cpp \
 				./lib/aarect.cpp \
 				./lib/bvh.cpp \
+				./lib/box.cpp \
 
 SRCS_CPPS = \
 				./src/main.cpp \

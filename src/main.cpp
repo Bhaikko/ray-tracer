@@ -9,6 +9,7 @@
 #include "./../include/material.h"
 #include "./../include/texture.h"
 #include "./../include/aarect.h"
+#include "./../include/box.h"
 
 #include <iostream>
 
@@ -42,25 +43,6 @@ color ray_color(const ray& r, const color& background, const hittable& world, in
 
     return  emitted + 
             attenuation * ray_color(scattered, background, world, depth - 1);
-}
-
-hittable_list cornell_box()
-{
-    hittable_list objects;
-
-    std::shared_ptr<material> red =     std::make_shared<lambertian>(color(0.65, 0.05, 0.05));
-    std::shared_ptr<material> white =   std::make_shared<lambertian>(color(0.73, 0.73, 0.73));
-    std::shared_ptr<material> green =   std::make_shared<lambertian>(color(0.12, 0.45, 0.15));
-    std::shared_ptr<material> light =   std::make_shared<diffuse_light>(color(15, 15, 15));
-
-    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 555, green));
-    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 0, red));
-    objects.add(std::make_shared<xz_rect>(213, 343, 227, 332, 554, light));
-    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 0, white));
-    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 555, white));
-    objects.add(std::make_shared<xy_rect>(0, 555, 0, 555, 555, white));
-
-    return objects;
 }
 
 hittable_list random_scene()
@@ -171,6 +153,28 @@ hittable_list simple_light()
     return objects;
 }
 
+hittable_list cornell_box()
+{
+    hittable_list objects;
+
+    std::shared_ptr<material> red =     std::make_shared<lambertian>(color(0.65, 0.05, 0.05));
+    std::shared_ptr<material> white =   std::make_shared<lambertian>(color(0.73, 0.73, 0.73));
+    std::shared_ptr<material> green =   std::make_shared<lambertian>(color(0.12, 0.45, 0.15));
+    std::shared_ptr<material> light =   std::make_shared<diffuse_light>(color(15, 15, 15));
+
+    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 555, green));
+    objects.add(std::make_shared<yz_rect>(0, 555, 0, 555, 0, red));
+    objects.add(std::make_shared<xz_rect>(213, 343, 227, 332, 554, light));
+    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 0, white));
+    objects.add(std::make_shared<xz_rect>(0, 555, 0, 555, 555, white));
+    objects.add(std::make_shared<xy_rect>(0, 555, 0, 555, 555, white));
+
+    objects.add(std::make_shared<box>(point3(130, 0, 65), point3(295, 165, 230), white));
+    objects.add(std::make_shared<box>(point3(265, 0, 295), point3(430, 330, 460), white));
+
+    return objects;
+}
+
 int main()
 {
     // Image Configurations
@@ -236,8 +240,9 @@ int main()
         case 6:
             world = cornell_box();
             aspect_ratio = 1.0;
-            image_width = 600;
-            samples_per_pixel = 200;
+            image_width = 400;
+            // image_height = static_cast<int>(image_width / aspect_ratio);
+            samples_per_pixel = 100;
             background = color(0, 0, 0);
             lookfrom = point3(278, 278, -800);
             lookat = point3(278, 278, 0);
