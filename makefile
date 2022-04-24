@@ -14,6 +14,7 @@ LIB_CPPS = \
 				./lib/aarect.cpp \
 				./lib/bvh.cpp \
 				./lib/box.cpp \
+				./lib/constant_medium.cpp \
 
 SRCS_CPPS = \
 				./src/main.cpp \
