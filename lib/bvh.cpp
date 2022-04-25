@@ -88,7 +88,7 @@ bool bvh_node::hit(const ray& r, double t_min, double t_max, hit_record& rec) co
     }
 
     bool hit_left = left->hit(r, t_min, t_max, rec);
-    bool hit_right = right->hit(r, t_min, t_max, rec);
+    bool hit_right = right->hit(r, t_min, hit_left ? rec.t: t_max, rec);
 
     return hit_left || hit_right;
 }

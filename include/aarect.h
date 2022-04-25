@@ -11,7 +11,6 @@ class xy_rect: public hittable
     public:
         // k is constant for z coordinate
         double x0, x1, y0, y1, k;
-
         std::shared_ptr<material> mp;
 
     public:
